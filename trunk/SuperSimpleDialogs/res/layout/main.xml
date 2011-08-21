@@ -21,4 +21,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:onClick="onDialogButtonClick"></Button>
+    <Button
+        android:text="@string/datedialogbutton_text"
+        android:id="@+id/buttonDateDialog"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onDateDialogButtonClick"></Button>
 </LinearLayout>
