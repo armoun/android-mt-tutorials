@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Click the button to launch a sample toast or dialog.</string>
-    <string name="app_name">SuperSimpleDialogs</string>
-    <string name="dialog_title">Warning!</string>
-    <string name="dialog_message">Are you sure you want to move to Siberia?</string>
-    <string name="toastbutton_text">Display Toast</string>
-    <string name="dialogbutton_text">Launch Dialog</string>
+    <string
+        name="hello">Click the button to launch a sample toast or dialog.
+    </string>
+    <string
+        name="app_name">SuperSimpleDialogs</string>
+    <string
+        name="dialog_title">Warning!</string>
+    <string
+        name="dialog_message">Are you sure you want to move to Siberia?</string>
+    <string
+        name="toastbutton_text">Display Toast</string>
+    <string
+        name="dialogbutton_text">Launch Dialog</string>
+    <string
+        name="datedialogbutton_text">Launch DatePickerDialog</string>
 </resources>
