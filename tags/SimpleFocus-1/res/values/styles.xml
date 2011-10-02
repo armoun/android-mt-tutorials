@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style
+        name="clockFaceNum">
+        <item
+            name="android:layout_width">38dp</item>
+        <item
+            name="android:layout_height">38dp</item>
+        <item
+            name="android:onClick">numClicked</item>
+        <item
+            name="android:textSize">9sp</item>
+    </style>
+</resources>
