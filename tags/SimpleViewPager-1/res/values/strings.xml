@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="app_name">SimpleViewPager</string>
+
+
+	<string name="farright_text">I am the far right pane. I have an ImageButton control.</string>
+	<string name="right_text">Lion looking right in the right pane.</string>
+	<string name="middle_text">MONKEY in the middle pane.</string>
+	<string name="left_text">Zebra leaping left in the left pane.</string>
+	<string name="farleft_text">I am the far left pane. I have a Button.</string>
+
+
+</resources>
