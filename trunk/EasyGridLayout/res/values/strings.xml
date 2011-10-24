@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, EasyGridLayoutActivity!</string>
+    <string name="app_name">EasyGridLayout</string>
+    <string name="one">one</string>
+    <string name="two">two</string>
+
+</resources>
