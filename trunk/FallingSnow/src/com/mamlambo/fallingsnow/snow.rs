@@ -52,7 +52,7 @@ int root() {
     }
     rsgDrawMesh(snowMesh);
 
-	if (rsRand(10) == 1)  {
+	if (rsRand(32) == 1)  {
 		wind.x = 0-wind.x;
 	}
 	
@@ -66,7 +66,7 @@ int root() {
 void init() {
 	grav.x = 0;
 	grav.y = 18;
-	wind.x = rsRand(80)-40;
+	wind.x = rsRand(50)+20;
 	wind.y = rsRand(4) - 2;
 }
 
