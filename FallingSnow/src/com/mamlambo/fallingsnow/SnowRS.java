@@ -2,7 +2,6 @@ package com.mamlambo.fallingsnow;
 
 import android.content.res.Resources;
 import android.renderscript.Mesh;
-import android.renderscript.ProgramFragmentFixedFunction;
 import android.renderscript.RenderScriptGL;
 import android.renderscript.ScriptC;
 
@@ -46,11 +45,6 @@ public class SnowRS {
     }
     
     public ScriptC createScript() {
-        ProgramFragmentFixedFunction.Builder pfb = new ProgramFragmentFixedFunction.Builder(
-                getRS());
-        pfb.setVaryingColor(true);
-        getRS().bindProgramFragment(pfb.create());
-
         ScriptField_Snow snow = new ScriptField_Snow(mRS, SNOW_FLAKES);
         Mesh.AllocationBuilder smb = new Mesh.AllocationBuilder(mRS);
         smb.addVertexAllocation(snow.getAllocation());
