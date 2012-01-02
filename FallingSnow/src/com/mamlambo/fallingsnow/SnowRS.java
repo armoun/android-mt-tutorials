@@ -1,23 +1,50 @@
 package com.mamlambo.fallingsnow;
 
+import android.content.res.Resources;
 import android.renderscript.Mesh;
 import android.renderscript.ProgramFragmentFixedFunction;
+import android.renderscript.RenderScriptGL;
 import android.renderscript.ScriptC;
 
-import com.android.wallpaper.RenderScriptScene;
-
-
-public class SnowRS extends RenderScriptScene {
+public class SnowRS {
 
     public static final int SNOW_FLAKES = 4000;
     private ScriptC_snow mScript;
 
+    protected int mWidth;
+    protected int mHeight;
+    protected boolean mPreview;
+    protected Resources mResources;
+    protected RenderScriptGL mRS;
+    
     public SnowRS(int width, int height) {
-        super(width, height);
+        mWidth = width;
+        mHeight = height;
     }
 
+    public void stop() {
+        mRS.bindRootScript(null);
+    }
 
-    @Override
+    public void start() {
+        mRS.bindRootScript(mScript);
+    }
+    
+    public void init(RenderScriptGL rs, Resources res, boolean isPreview) {
+        mRS = rs;
+        mResources = res;
+        mPreview = isPreview;
+        mScript = (ScriptC_snow) createScript();
+    }
+    
+    public RenderScriptGL getRS() {
+        return mRS;
+    }
+    
+    public Resources getResources() {
+        return mResources;
+    }
+    
     public ScriptC createScript() {
         ProgramFragmentFixedFunction.Builder pfb = new ProgramFragmentFixedFunction.Builder(
                 getRS());
@@ -30,11 +57,12 @@ public class SnowRS extends RenderScriptScene {
         smb.addIndexSetType(Mesh.Primitive.POINT);
         Mesh sm = smb.create();
 
-        mScript = new ScriptC_snow(mRS, getResources(), R.raw.snow);
-        mScript.set_snowMesh(sm);
-        mScript.bind_snow(snow);
-        mScript.invoke_initSnow();
-        return mScript;
+        ScriptC_snow script;
+        script = new ScriptC_snow(mRS, getResources(), R.raw.snow);
+        script.set_snowMesh(sm);
+        script.bind_snow(snow);
+        script.invoke_initSnow();
+        return script;
     }
 
 
