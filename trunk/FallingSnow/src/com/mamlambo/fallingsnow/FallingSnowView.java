@@ -35,5 +35,4 @@ public class FallingSnowView extends RSSurfaceView {
             destroyRenderScriptGL();
         }
     }
-	
 }

@@ -2,7 +2,7 @@
 
 // Tell which java package name the reflected files should belong to
 #pragma rs java_package_name(com.mamlambo.fallingsnow)
-#pragma stateFragment(parent)
+//#pragma stateFragment(parent)
 // Built-in header with graphics API's
 #include "rs_graphics.rsh"
 
@@ -57,9 +57,13 @@ int root() {
 	
     return 30;
 }
-
-
-
+/*
+int root() {
+    rsgClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    rsgDrawMesh(snowMesh);
+    return 0;
+}
+*/
 
 // This is invoked automatically when the script is created
 void init() {
