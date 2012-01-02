@@ -11,7 +11,6 @@ rs_mesh snowMesh;
 typedef struct __attribute__((packed, aligned(4))) Snow {
     float2 velocity;
     float2 position;
-    float flux;
     uchar4 color;
 } Snow_t;
 Snow_t *snow;
