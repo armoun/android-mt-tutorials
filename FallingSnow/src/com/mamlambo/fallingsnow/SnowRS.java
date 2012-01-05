@@ -1,7 +1,19 @@
 package com.mamlambo.fallingsnow;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.Matrix4f;
 import android.renderscript.Mesh;
+import android.renderscript.ProgramFragment;
+import android.renderscript.ProgramFragmentFixedFunction;
+import android.renderscript.ProgramRaster;
+import android.renderscript.ProgramRaster.CullMode;
+import android.renderscript.ProgramStore;
+import android.renderscript.ProgramVertex;
+import android.renderscript.RenderScript;
 import android.renderscript.RenderScriptGL;
 import android.renderscript.ScriptC;
 
@@ -51,13 +63,95 @@ public class SnowRS {
         smb.addIndexSetType(Mesh.Primitive.POINT);
         Mesh sm = smb.create();
 
+        updateProjectionMatrices();
+        createVertexShader(sm.getVertexAllocation(0).getType().getElement());
+        
+        ProgramFragment pfs = configurePointSprite();
+        
+        mRS.bindProgramStore(BLEND_ADD_DEPTH_NONE(mRS));
+        
         ScriptC_snow script;
         script = new ScriptC_snow(mRS, getResources(), R.raw.snow);
         script.set_snowMesh(sm);
+        script.set_gPFSnow(pfs);
         script.bind_snow(snow);
         script.invoke_initSnow();
+
         return script;
     }
+    
+    private ScriptField_VpConsts mVpConsts;
 
+    void updateProjectionMatrices() {
+        mVpConsts = new ScriptField_VpConsts(mRS, 1,
+                                             Allocation.USAGE_SCRIPT |
+                                             Allocation.USAGE_GRAPHICS_CONSTANTS);
+        ScriptField_VpConsts.Item i = new ScriptField_VpConsts.Item();
+        Matrix4f mvp = new Matrix4f();
+        mvp.loadOrtho(0, mRS.getWidth(), mRS.getHeight(), 0, -1, 1);
+        i.MVP = mvp;
+        mVpConsts.set(i, 0, true);
+    }
+    
+    private void createVertexShader(Element input) {
+        ProgramVertex.Builder sb = new ProgramVertex.Builder(mRS);
+        String t =  "varying vec4 varColor;\n" +
+                    "void main() {\n" +
+                    "  vec4 pos = vec4(0.0, 0.0, 0.0, 1.0);\n" +
+                    "  pos.xy = ATTRIB_position;\n" +
+                    "  gl_Position = UNI_MVP * pos;\n" +
+                    "  varColor = ATTRIB_color;\n" +
+                    "  gl_PointSize = ATTRIB_size;\n" +
+                    "}\n";
+        sb.setShader(t);
+        sb.addConstant(mVpConsts.getType());
+        sb.addInput(input);
+        ProgramVertex pvs = sb.create();
+        
+        pvs.bindConstants(mVpConsts.getAllocation(), 0);
+        mRS.bindProgramVertex(pvs);
+    }
 
+    private ProgramFragment configurePointSprite() {
+    	ProgramFragmentFixedFunction.Builder builder = new ProgramFragmentFixedFunction.Builder(mRS);
+    	
+        builder = new ProgramFragmentFixedFunction.Builder(mRS);
+        builder.setPointSpriteTexCoordinateReplacement(true);
+        builder.setTexture(ProgramFragmentFixedFunction.Builder.EnvMode.MODULATE,
+                           ProgramFragmentFixedFunction.Builder.Format.RGBA, 0);
+        builder.setVaryingColor(true);
+        ProgramFragment pfs = builder.create();
+       // pfs.bindSampler(Sampler.WRAP_LINEAR(mRS), 0);
+
+        pfs.bindTexture(loadTextureARGB(R.drawable.snowflake), 0);
+    	
+        ProgramRaster.Builder b = new ProgramRaster.Builder(mRS);
+        b.setPointSpriteEnabled(true);
+        b.setCullMode(CullMode.NONE);
+        ProgramRaster pr = b.create();
+        mRS.bindProgramRaster(pr);
+        
+        
+        return pfs;
+    }
+    
+    
+    private Allocation loadTextureARGB(int id) {
+    	BitmapFactory.Options options = new BitmapFactory.Options();
+    	options.inScaled = false;
+    	options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        Bitmap b = BitmapFactory.decodeResource(mResources, id, options);
+        final Allocation allocation = Allocation.createFromBitmap(mRS, b);
+        return allocation;
+    }
+    
+    
+    ProgramStore BLEND_ADD_DEPTH_NONE(RenderScript rs) {
+        ProgramStore.Builder builder = new ProgramStore.Builder(rs);
+        builder.setDepthFunc(ProgramStore.DepthFunc.ALWAYS);
+        builder.setBlendFunc(ProgramStore.BlendSrcFunc.ONE_MINUS_SRC_ALPHA, ProgramStore.BlendDstFunc.DST_ALPHA);
+        builder.setDitherEnabled(false);
+        builder.setDepthMaskEnabled(true);
+        return builder.create();
+    }
 }
