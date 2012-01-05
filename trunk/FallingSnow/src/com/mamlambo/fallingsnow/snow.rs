@@ -2,18 +2,29 @@
 
 // Tell which java package name the reflected files should belong to
 #pragma rs java_package_name(com.mamlambo.fallingsnow)
-//#pragma stateFragment(parent)
+#pragma stateVertex(parent)
+
+
 // Built-in header with graphics API's
 #include "rs_graphics.rsh"
 
 rs_mesh snowMesh;
 
+// fragment shader
+rs_program_fragment gPFSnow;
+
 typedef struct __attribute__((packed, aligned(4))) Snow {
     float2 velocity;
     float2 position;
+    float size;
     uchar4 color;
 } Snow_t;
 Snow_t *snow;
+
+typedef struct VpConsts {
+    rs_matrix4x4 MVP;
+} VpConsts_t;
+VpConsts_t *vpConstants;
 
 float2 wind;
 float2 grav;
@@ -49,6 +60,10 @@ int root() {
 
         pSnow++;
     }
+    
+    rsgBindProgramFragment(gPFSnow);
+    rsgDrawMesh(snowMesh);
+    
     rsgDrawMesh(snowMesh);
 
 	if (rsRand(32) == 1)  {
@@ -60,10 +75,11 @@ int root() {
 /*
 int root() {
     rsgClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    rsgBindProgramFragment(gPFSnow);
     rsgDrawMesh(snowMesh);
     return 0;
-}
-*/
+}*/
+
 
 // This is invoked automatically when the script is created
 void init() {
@@ -92,6 +108,9 @@ void initSnow() {
         //float b = pSnow->velocity.x/100;
         uchar4 c = rsPackColorTo8888(255, 255, 255);
         pSnow->color = c;
+        
+        pSnow->size = rsRand(15)+4;
+        
         pSnow++;
     }
 }
