@@ -1,4 +1,4 @@
-package com.mamlambo.selfcam;
+package com.mamlambo.mirror;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -126,11 +126,10 @@ public class SimpleSelfCamActivity extends Activity implements PictureCallback {
 		public void surfaceChanged(SurfaceHolder holder, int format, int w,
 				int h) {
 			if (mHolder.getSurface() == null) {
-				// preview surface does not exist
 				return;
 			}
 
-			// can't make changes when preview is active
+			// can't make changes while preview is active
 			try {
 				mCamera.stopPreview();
 			} catch (Exception e) {
@@ -190,8 +189,7 @@ public class SimpleSelfCamActivity extends Activity implements PictureCallback {
 		File pictureFileDir = new File(
 				Environment
 						.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-				"SimpleSelfCam");// new
-		// File("cap.jpg");
+				"SimpleSelfCam");
 
 		if (!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
 
