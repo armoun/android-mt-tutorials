@@ -148,10 +148,10 @@ public class SnowRS {
     
     ProgramStore BLEND_ADD_DEPTH_NONE(RenderScript rs) {
         ProgramStore.Builder builder = new ProgramStore.Builder(rs);
-        builder.setDepthFunc(ProgramStore.DepthFunc.ALWAYS);
-        builder.setBlendFunc(ProgramStore.BlendSrcFunc.ONE_MINUS_SRC_ALPHA, ProgramStore.BlendDstFunc.DST_ALPHA);
+
+        builder.setBlendFunc(ProgramStore.BlendSrcFunc.ONE, ProgramStore.BlendDstFunc.ONE);
         builder.setDitherEnabled(false);
-        builder.setDepthMaskEnabled(true);
+        builder.setDepthMaskEnabled(false);
         return builder.create();
     }
 }
