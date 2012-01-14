@@ -2,7 +2,6 @@ package com.mamlambo.selfcam;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 import android.app.Activity;
 import android.content.Context;
@@ -115,7 +114,7 @@ public class SimpleSelfCamActivity extends Activity implements PictureCallback {
 			try {
 				mCamera.setPreviewDisplay(holder);
 				mCamera.startPreview();
-			} catch (IOException error) {
+			} catch (Exception error) {
 				Log.d(DEBUG_TAG,
 						"Error starting preview: " + error.getMessage());
 			}
@@ -138,16 +137,17 @@ public class SimpleSelfCamActivity extends Activity implements PictureCallback {
 
 			}
 
-			// set rotation to match device orientation
-			setCameraDisplayOrientationAndSize();
-
-			// start up the preview
+			
 			try {
+				// set rotation to match device orientation
+				setCameraDisplayOrientationAndSize();
+				
+				// start up the preview
 				mCamera.setPreviewDisplay(mHolder);
 				mCamera.startPreview();
 
-			} catch (Exception err) {
-				Log.d(DEBUG_TAG, "Error starting preview: " + err.getMessage());
+			} catch (Exception error) {
+				Log.d(DEBUG_TAG, "Error starting preview: " + error.getMessage());
 			}
 		}
 
@@ -212,8 +212,8 @@ public class SimpleSelfCamActivity extends Activity implements PictureCallback {
 			fos.close();
 			Toast.makeText(this, "Image saved as latest_mug.jpg",
 					Toast.LENGTH_LONG).show();
-		} catch (Exception err) {
-			Log.d(DEBUG_TAG, "File not saved: " + err.getMessage());
+		} catch (Exception error) {
+			Log.d(DEBUG_TAG, "File not saved: " + error.getMessage());
 			Toast.makeText(this, "Can't save image.", Toast.LENGTH_LONG).show();
 		}
 	}
