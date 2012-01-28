@@ -7,6 +7,7 @@
 
 // Built-in header with graphics API's
 #include "rs_graphics.rsh"
+#include "rs_core.rsh"
 
 rs_mesh snowMesh;
 
@@ -22,6 +23,7 @@ typedef struct __attribute__((packed, aligned(4))) Snow {
 Snow_t *snow;
 
 typedef struct VpConsts {
+    float2 offset;
     rs_matrix4x4 MVP;
 } VpConsts_t;
 VpConsts_t *vpConstants;
@@ -39,6 +41,8 @@ int root() {
     // dimens
     float w = rsgGetWidth();
     float h = rsgGetHeight();
+    
+    
     
     int snowCount = rsAllocationGetDimX(rsGetAllocation(snow));
     
@@ -61,24 +65,17 @@ int root() {
         pSnow++;
     }
     
+  
     rsgBindProgramFragment(gPFSnow);
     rsgDrawMesh(snowMesh);
     
-    rsgDrawMesh(snowMesh);
-
 	if (rsRand(32) == 1)  {
 		wind.x = 0-wind.x;
 	}
 	
     return 30;
 }
-/*
-int root() {
-    rsgClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    rsgBindProgramFragment(gPFSnow);
-    rsgDrawMesh(snowMesh);
-    return 0;
-}*/
+
 
 
 // This is invoked automatically when the script is created
@@ -114,4 +111,3 @@ void initSnow() {
         pSnow++;
     }
 }
-

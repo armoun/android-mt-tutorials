@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
+import android.renderscript.Float2;
 import android.renderscript.Matrix4f;
 import android.renderscript.Mesh;
 import android.renderscript.ProgramFragment;
@@ -16,8 +17,10 @@ import android.renderscript.ProgramVertex;
 import android.renderscript.RenderScript;
 import android.renderscript.RenderScriptGL;
 import android.renderscript.ScriptC;
+import android.util.Log;
 
 public class SnowRS {
+    private static final String DEBUG_TAG = "SnowRS";
 
     public static final int SNOW_FLAKES = 4000;
     private ScriptC_snow mScript;
@@ -31,6 +34,21 @@ public class SnowRS {
     public SnowRS(int width, int height) {
         mWidth = width;
         mHeight = height;
+    }
+    
+    public void resize(int width, int height) {
+        mWidth = width;
+        mHeight = height;
+        
+        //TODO  redo points to cover new area
+    }
+    
+    public void setOffset(int pixelOffsetX, int pixelOffsetY) {
+        Log.d (DEBUG_TAG, "x offset = ["+pixelOffsetX+"], y offset ["+pixelOffsetY+"]");
+        /*Float2 offset = mVpConsts.get_offset(0);
+        offset.x = pixelOffsetX;
+        offset.y = pixelOffsetY;
+        mVpConsts.set_offset(0, offset, true);*/
     }
 
     public void stop() {
@@ -86,10 +104,13 @@ public class SnowRS {
         mVpConsts = new ScriptField_VpConsts(mRS, 1,
                                              Allocation.USAGE_SCRIPT |
                                              Allocation.USAGE_GRAPHICS_CONSTANTS);
+                                             
         ScriptField_VpConsts.Item i = new ScriptField_VpConsts.Item();
         Matrix4f mvp = new Matrix4f();
         mvp.loadOrtho(0, mRS.getWidth(), mRS.getHeight(), 0, -1, 1);
+        Float2 wo = new Float2(0, 0);
         i.MVP = mvp;
+        i.offset = wo;
         mVpConsts.set(i, 0, true);
     }
     
@@ -99,6 +120,7 @@ public class SnowRS {
                     "void main() {\n" +
                     "  vec4 pos = vec4(0.0, 0.0, 0.0, 1.0);\n" +
                     "  pos.xy = ATTRIB_position;\n" +
+                    "  pos.x = pos.x + UNI_offset.x;\n" +
                     "  gl_Position = UNI_MVP * pos;\n" +
                     "  varColor = ATTRIB_color;\n" +
                     "  gl_PointSize = ATTRIB_size;\n" +
@@ -121,7 +143,6 @@ public class SnowRS {
                            ProgramFragmentFixedFunction.Builder.Format.RGBA, 0);
         builder.setVaryingColor(true);
         ProgramFragment pfs = builder.create();
-       // pfs.bindSampler(Sampler.WRAP_LINEAR(mRS), 0);
 
         pfs.bindTexture(loadTextureARGB(R.drawable.snowflake), 0);
     	
