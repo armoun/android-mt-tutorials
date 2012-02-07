@@ -49,7 +49,7 @@ public class FallingSnowWallpaperService extends WallpaperService {
             super.onOffsetsChanged(xOffset, yOffset, xOffsetStep, yOffsetStep,
                     xPixelOffset, yPixelOffset);
             if (mSnowRS != null) {
-                mSnowRS.setOffset(xPixelOffset, yPixelOffset);
+                //mSnowRS.setOffset(xPixelOffset, yPixelOffset);
             }
             
         }
@@ -68,7 +68,7 @@ public class FallingSnowWallpaperService extends WallpaperService {
                 mSnowRS.init(mRenderScriptGL, getResources(), isPreview());
                 mSnowRS.start();
             } else {
-                mSnowRS.resize(width, height);
+                //mSnowRS.resize(width, height);
             }
         }
 
