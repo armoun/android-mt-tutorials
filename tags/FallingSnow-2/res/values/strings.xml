@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Falling Snow, a Live Wallpaper</string>
+    <string name="fallingsnow_wp_desc">Live wallpaper with snow simulation</string>
+    <string name="set_wallpaper">Set Wallpaper</string>
+</resources>
