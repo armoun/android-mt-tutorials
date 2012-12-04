@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/details_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/circle_detail"
+        style="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:padding="16dp"
+        tools:context=".CircleDetailFragment" />
+
+    <ImageView
+        android:id="@+id/circle_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/circle_detail"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="40dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="A Circle"
+        android:scaleType="fitCenter"
+        android:src="@drawable/rainbow_circle" />
+
+</RelativeLayout>
