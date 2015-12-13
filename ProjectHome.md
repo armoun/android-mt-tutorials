@@ -1,0 +1,1 @@
+This project is a combination of multiple open source projects in a single repository. This will more efficiently use the Google code resources and lower overhead for small projects and tidbits we want to provide as open source.
